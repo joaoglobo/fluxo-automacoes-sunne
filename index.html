@@ -1255,5 +1255,308 @@ footer::after {
           <div class="card-stripe stripe-n8n"></div>
           <div class="card-head">
             <div>
-              <div class="card-id">Integração Externa · Handoff 
+The user wants me to continue the HTML from where it stopped - after the N8N Handoff 4 card. Looking at the image, I can see the page has WF1, N8N1, WF2, N8N2, WF3, N8N3, WF4 visible in the main column, and then there are floating cards to the right that appear to be WF4, N8N4, WF5, N8N5, WF6 which are broken/floating. I need to continue from after the N8N Handoff 4 card-head div that was cut off.
+
+The last thing that was generated ended mid-way through the N8N Handoff 4 card. Let me continue from where it stopped - after <div class="card-id">Integração Externa · Handoff 4</div>.
+
+Actually looking at the previous message, it ended with the card-id div cut off mid-text, so I need to pick up from that exact point and write out the rest of the HTML file to completion.
+
+Continuing the HTML structure…
+
+Cole este trecho exatamente onde o código anterior foi cortado, substituindo tudo a partir de <div class="card-id">Integração Externa · Handoff até o final do arquivo:
+
+Html
+Copiar
+              <div class="card-id">Integração Externa · Handoff 4</div>
+              <div class="card-title">n8n — Download dos Documentos e Upload para o Google Drive</div>
+            </div>
+            <div class="card-status status-n8n">🔶 n8n</div>
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="col-label">O que dispara o n8n</div>
+              <div class="trig-box">
+                <div class="trig-text">Ticket em <strong>"Assinados - Baixando Documentos"</strong>.</div>
+              </div>
+            </div>
+            <div>
+              <div class="col-label">O que o n8n faz</div>
+              <div class="actions-list">
+                <div class="action"><div class="act-num num-n8n">1</div><span>Baixa os documentos assinados do ClickSign</span></div>
+                <div class="action"><div class="act-num num-n8n">2</div><span>Faz upload para o Google Drive e obtém a URL da pasta</span></div>
+                <div class="action"><div class="act-num num-n8n">3</div><span>Garante que <strong>Tipo de Rateio</strong>, <strong>Gerador - Alocação e Rateio</strong> e <strong>ID Usina - Alocação e Rateio</strong> estão preenchidos</span></div>
+                <div class="action"><div class="act-num num-n8n">4</div><span>Escreve: <strong>Link - Anexos do Drive</strong> com a URL gerada</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-alert alert-warn">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-text"><strong>Atenção:</strong> Os campos <strong>Tipo de Rateio</strong>, <strong>Gerador - Alocação e Rateio</strong> e <strong>ID Usina - Alocação e Rateio</strong> precisam estar preenchidos antes do n8n enviar o link. Caso contrário, o nome do ticket ficará incompleto na próxima etapa.</div>
+          </div>
+          <div class="card-props">
+            <span class="props-lbl">Sinais de retorno:</span>
+            <span class="prop-tag prop-n8n">Link - Anexos do Drive</span>
+            <span class="prop-tag prop-n8n">Tipo de Rateio</span>
+            <span class="prop-tag prop-n8n">Gerador - Alocação e Rateio</span>
+            <span class="prop-tag prop-n8n">ID Usina - Alocação e Rateio</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WF 5 -->
+    <div class="signal-row">
+      <div class="signal-chip">HubSpot detecta o sinal → executa o Workflow 5</div>
+    </div>
+    <div class="step-row">
+      <div class="step-aside">
+        <div class="step-badge badge-hs">5</div>
+        <div class="step-type-lbl lbl-hs">HubSpot</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-body">
+        <div class="card card-hs">
+          <div class="card-stripe stripe-hs"></div>
+          <div class="card-head">
+            <div>
+              <div class="card-id">Workflow · ID 1726537479</div>
+              <div class="card-title">Etapa 5 — Assinados - Baixando Documentos para Cadastro no OPS</div>
+            </div>
+            <div class="card-status status-active">● Ativo</div>
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="col-label">Quando é ativado</div>
+              <div class="trig-box">
+                <div class="trig-text">Por evento: quando <strong>Link - Anexos do Drive</strong> recebe qualquer valor preenchido. Condição de segurança: o ticket deve estar em <strong>"Assinados - Baixando Documentos"</strong>.</div>
+              </div>
+            </div>
+            <div>
+              <div class="col-label">O que acontece (ordem real de execução)</div>
+              <div class="actions-list">
+                <div class="action"><div class="act-num num-hs">1</div><span>Status do Ticket → <strong>"Cadastro no OPS"</strong></span></div>
+                <div class="action"><div class="act-num num-hs">2</div><span><strong>Problemas nos Termos e Documentos?</strong> → falso</span></div>
+                <div class="action"><div class="act-num num-hs">3</div><span><strong>Nome do Ticket</strong> → [Tipo de Rateio] – [Gerador - Alocação e Rateio] – [ID Usina - Alocação e Rateio]</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-alert alert-warn">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-text"><strong>Atenção:</strong> Qualquer valor gravado em <strong>Link - Anexos do Drive</strong> dispara o fluxo, inclusive links inválidos — não há validação de formato. A ordem de execução das ações não segue a numeração visual do HubSpot, ela é definida internamente pelo encadeamento do workflow.</div>
+          </div>
+          <div class="card-props">
+            <span class="props-lbl">Propriedades:</span>
+            <span class="prop-tag prop-n8n">Link - Anexos do Drive</span>
+            <span class="prop-tag prop-hs">Status do Ticket</span>
+            <span class="prop-tag prop-hs">Problemas nos Termos e Documentos?</span>
+            <span class="prop-tag prop-hs">Nome do Ticket</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- N8N 5 -->
+    <div class="signal-row">
+      <div class="signal-chip">n8n cadastra no sistema OPS → escreve: Negócios do Ticket Cadastrados no OPS? = verdadeiro</div>
+    </div>
+    <div class="step-row">
+      <div class="step-aside">
+        <div class="step-badge badge-n8n">n8n</div>
+        <div class="step-type-lbl lbl-n8n">Handoff 5</div>
+        <div class="step-vline"></div>
+      </div>
+      <div class="step-body">
+        <div class="card card-n8n">
+          <div class="card-stripe stripe-n8n"></div>
+          <div class="card-head">
+            <div>
+              <div class="card-id">Integração Externa · Handoff 5</div>
+              <div class="card-title">n8n — Cadastro no Sistema OPS</div>
+            </div>
+            <div class="card-status status-n8n">🔶 n8n</div>
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="col-label">O que dispara o n8n</div>
+              <div class="trig-box">
+                <div class="trig-text">Ticket em <strong>"Cadastro no OPS"</strong>.</div>
+              </div>
+            </div>
+            <div>
+              <div class="col-label">O que o n8n faz</div>
+              <div class="actions-list">
+                <div class="action"><div class="act-num num-n8n">1</div><span>Coleta os dados do ticket e dos negócios associados via API do HubSpot</span></div>
+                <div class="action"><div class="act-num num-n8n">2</div><span>Cadastra o cliente e o negócio no sistema OPS</span></div>
+                <div class="action"><div class="act-num num-n8n">3</div><span>Escreve: <strong>Negócios do Ticket Cadastrados no OPS? = verdadeiro</strong></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-props">
+            <span class="props-lbl">Sinal de retorno:</span>
+            <span class="prop-tag prop-n8n">Negócios do Ticket Cadastrados no OPS?</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WF 6 -->
+    <div class="signal-row">
+      <div class="signal-chip">HubSpot detecta o sinal → executa o Workflow 6 e encerra o ciclo</div>
+    </div>
+    <div class="step-row">
+      <div class="step-aside">
+        <div class="step-badge badge-hs">6</div>
+        <div class="step-type-lbl lbl-hs">HubSpot</div>
+        <div class="step-vline hide"></div>
+      </div>
+      <div class="step-body">
+        <div class="card card-hs">
+          <div class="card-stripe stripe-hs"></div>
+          <div class="card-head">
+            <div>
+              <div class="card-id">Workflow · ID 1756086655</div>
+              <div class="card-title">Etapa 6 — Cadastro no OPS para Aberto (Rateio)</div>
+            </div>
+            <div class="card-status status-active">● Ativo</div>
+          </div>
+          <div class="card-body">
+            <div>
+              <div class="col-label">Quando é ativado</div>
+              <div class="trig-box">
+                <div class="trig-text">Por evento: quando <strong>Negócios do Ticket Cadastrados no OPS?</strong> muda para verdadeiro. Condição de segurança: o ticket deve estar em <strong>"Cadastro no OPS"</strong>.</div>
+              </div>
+            </div>
+            <div>
+              <div class="col-label">O que acontece</div>
+              <div class="actions-list">
+                <div class="action"><div class="act-num num-hs">1</div><span>No <strong>ticket:</strong> Status → "Aberto (Rateio)"</span></div>
+                <div class="action"><div class="act-num num-hs">2</div><span>Aguarda <strong>1 minuto</strong> — delay de segurança contra condições de corrida</span></div>
+                <div class="action"><div class="act-num num-hs">3</div><span>No <strong>negócio associado:</strong> Etapa do Negócio → estágio final do pipeline</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="card-alert alert-warn">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-text"><strong>Atenção:</strong> O delay de 1 minuto é intencional — garante que o ticket esteja consolidado antes de propagar a mudança para o negócio associado. O vínculo entre ticket e negócio é obrigatório para a ação 3 funcionar. Sem ele, o negócio não avança e ninguém é notificado.</div>
+          </div>
+          <div class="card-props">
+            <span class="props-lbl">Propriedades:</span>
+            <span class="prop-tag prop-n8n">Negócios do Ticket Cadastrados no OPS?</span>
+            <span class="prop-tag prop-hs">Status do Ticket</span>
+            <span class="prop-tag prop-hs">Etapa do Negócio</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- END NODE -->
+    <div class="end-node">
+      <div class="end-check">✅</div>
+      <div class="end-body">
+        <div class="end-label">Fim do Ciclo</div>
+        <div class="end-title">Ticket em "Aberto (Rateio)" · Negócio avançado para o estágio final</div>
+        <div class="end-desc">O processo operacional continua fora do HubSpot ou em fluxos separados de cobrança e rateio.</div>
+      </div>
+    </div>
+
+  </div><!-- /pipeline -->
+
+  <!-- TROUBLESHOOTING -->
+  <div class="sec-head" style="margin-top:64px;">
+    <div class="sec-icon">!</div>
+    <div class="sec-title">Troubleshooting — Problemas que Podem Travar o Fluxo</div>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="trouble-grid">
+
+    <div class="t-card tc-crit">
+      <div class="t-top">
+        <div class="t-icon-wrap wrap-crit">🚨</div>
+        <div class="t-title">Case sensitivo em "Contratos de Negócios Associados Assinados?"</div>
+      </div>
+      <div class="t-text">O workflow da Etapa 4 espera o valor <code style="background:rgba(255,54,94,0.1);padding:1px 5px;border-radius:3px;font-family:monospace;font-size:11px;">True</code> com T maiúsculo. Se o n8n escrever <code style="background:rgba(255,54,94,0.1);padding:1px 5px;border-radius:3px;font-family:monospace;font-size:11px;">true</code> em minúsculas, o HubSpot pode não reconhecer o match e o ticket fica parado em "Aguardando Assinatura" sem nenhum alerta. Teste manualmente qual formato a propriedade aceita antes de ir para produção.</div>
+    </div>
+
+    <div class="t-card tc-crit">
+      <div class="t-top">
+        <div class="t-icon-wrap wrap-crit">🔕</div>
+        <div class="t-title">Nenhum workflow possui alerta de erro configurado</div>
+      </div>
+      <div class="t-text">Se o n8n não escrever uma propriedade de sinal dentro de um prazo esperado, o ticket fica parado no estágio atual sem que ninguém seja avisado. Recomenda-se criar um workflow de monitoramento separado que verifique tickets parados há mais de X horas em cada estágio intermediário.</div>
+    </div>
+
+    <div class="t-card tc-warn">
+      <div class="t-top">
+        <div class="t-icon-wrap wrap-warn">👤</div>
+        <div class="t-title">Proprietário fixo na Etapa 1</div>
+      </div>
+      <div class="t-text">O responsável atribuído está hardcoded no workflow. Se esse usuário for desativado no HubSpot, as atribuições no ticket e no negócio param de funcionar silenciosamente — sem fallback nem notificação configurada.</div>
+    </div>
+
+    <div class="t-card tc-warn">
+      <div class="t-top">
+        <div class="t-icon-wrap wrap-warn">🔗</div>
+        <div class="t-title">Ausência de vínculo entre ticket e negócio é silenciosa</div>
+      </div>
+      <div class="t-text">Nas Etapas 1 e 6, as ações que atualizam a <strong>Etapa do Negócio</strong> dependem de o ticket ter um negócio associado. Se não houver esse vínculo, as ações são ignoradas sem erro visível — o negócio simplesmente não avança.</div>
+    </div>
+
+    <div class="t-card tc-warn">
+      <div class="t-top">
+        <div class="t-icon-wrap wrap-warn">📝</div>
+        <div class="t-title">Nome do Ticket depende de 3 campos preenchidos</div>
+      </div>
+      <div class="t-text">Se <strong>Tipo de Rateio</strong>, <strong>Gerador - Alocação e Rateio</strong> ou <strong>ID Usina - Alocação e Rateio</strong> estiverem vazios quando o n8n enviar o link do Drive, o nome do ticket ficará incompleto. O n8n deve garantir o preenchimento dos três campos antes de disparar o sinal de retorno.</div>
+    </div>
+
+    <div class="t-card tc-warn">
+      <div class="t-top">
+        <div class="t-icon-wrap wrap-warn">⚡</div>
+        <div class="t-title">Risco de bypass na Etapa 2</div>
+      </div>
+      <div class="t-text">Se alguém mover manualmente um ticket de volta para "Gerar Contratos" e o campo <strong>Contratos do Ticket Gerados</strong> já estiver marcado como verdadeiro de uma execução anterior, o Workflow 2 avança imediatamente o ticket sem que os contratos sejam regenerados.</div>
+    </div>
+
+    <div class="t-card tc-info">
+      <div class="t-top">
+        <div class="t-icon-wrap wrap-info">↔️</div>
+        <div class="t-title">O n8n nunca é chamado diretamente pelo HubSpot</div>
+      </div>
+      <div class="t-text">Nenhum dos 6 workflows possui ação HTTP ou webhook explícito. É o n8n que monitora o HubSpot. Se o monitoramento do n8n ficar offline, o fluxo para no estágio atual sem que o HubSpot perceba — o ticket simplesmente não avança.</div>
+    </div>
+
+    <div class="t-card tc-info">
+      <div class="t-top">
+        <div class="t-icon-wrap wrap-info">⏱️</div>
+        <div class="t-title">O delay de 1 minuto na Etapa 6 é intencional</div>
+      </div>
+      <div class="t-text">O intervalo entre mover o ticket para "Aberto (Rateio)" e avançar a Etapa do Negócio existe para evitar condições de corrida entre os sistemas. Não remova esse delay sem entender o impacto no pipeline de vendas.</div>
+    </div>
+
+  </div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-mark">
+        <div class="footer-mark-inner"></div>
+      </div>
+      <div>
+        <div class="footer-name">SUNNE</div>
+        <div class="footer-sub">Manual de Automações Internas</div>
+      </div>
+    </div>
+    <div class="footer-info">
+      <div class="footer-text">Pipeline de Contratos e Assinaturas · <span>6 Workflows</span> · <span>5 Handoffs n8n</span></div>
+      <div class="footer-text">Última atualização: <span>Janeiro de 2026</span> · Versão <span>1.0</span></div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
 
