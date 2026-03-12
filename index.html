@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fluxo de Automações — Pipeline de Contratos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --brand-primary: #1a1a2e;
+      --brand-accent: #00c896;
+      --brand-accent-light: #00e6a8;
+      --brand-secondary: #16213e;
+      --n8n-color: #f4a231;
+      --n8n-bg: #fff8ed;
+      --hubspot-color: #0066cc;
+      --hubspot-bg: #eef5ff;
+      --text-primary: #1a1a2e;
+      --text-secondary: #5a6072;
+      --text-light: #8a92a6;
+      --border: #e4e8f0;
+      --bg-page: #f5f7fa;
+      --bg-card: #ffffff;
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--brand-primary);
+      padding: 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      background: var(--brand-accent);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--brand-primary);
+      flex-shrink: 0;
+    }
+
+    .header-title {
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .header-subtitle {
+      color: rgba(255,255,255,0.45);
+      font-size: 12px;
+      font-weight: 400;
+      margin-top: 1px;
+    }
+
+    .header-badge {
+      background: rgba(0,200,150,0.15);
+      border: 1px solid rgba(0,200,150,0.3);
+      color: var(--brand-accent-light);
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    /* ── HERO SECTION ── */
+    .hero {
+      background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+      padding: 64px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 60% 40%, rgba(0,200,150,0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0,200,150,0.12);
+      border: 1px solid rgba(0,200,150,0.25);
+      color: var(--brand-accent);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+
+    .hero-tag::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--brand-accent);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.3); }
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 span {
+      color: var(--brand-accent);
+    }
+
+    .hero p {
+      color: rgba(255,255,255,0.6);
+      font-size: 16px;
+      max-width: 560px;
+      margin: 0 auto 32px;
+    }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--brand-accent);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      margin-top: 4px;
+    }
+
+    /* ── LEGEND ── */
+    .legend-bar {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 32px;
+    }
+
+    .legend-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .legend-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-right: 4px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    /* ── MAIN CONTENT ── */
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 32px;
+    }
+
+    /* ── SECTION TITLE ── */
+    .section-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── PIPELINE FLOW ── */
+    .pipeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* ── STEP CARD ── */
+    .step {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 0;
+      position: relative;
+    }
+
+    .step-sidebar {
+      padding: 0 24px 0 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      position: relative;
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      position: relative;
+      z-index: 2;
+      flex-shrink: 0;
+    }
+
+    .step-number.hubspot {
+      background: var(--hubspot-bg);
+      color: var(--hubspot-color);
+      border: 2px solid var(--hubspot-color);
+    }
+
+    .step-number.n8n {
+      background: var(--n8n-bg);
+      color: var(--n8n-color);
+      border: 2px solid var(--n8n-color);
+    }
+
+    .step-connector {
+      position: absolute;
+      left: 50%;
+      transform: translateX(calc(-50% + 12px));
+      top: 40px;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+      z-index: 1;
+    }
+
+    .step-connector.last { display: none; }
+
+    .step-connector.n8n-to-hs {
+      background: linear-gradient(to bottom, var(--n8n-color), var(--hubspot-color));
+    }
+
+    .step-connector.hs-to-n8n {
+      background: linear-gradient(to bottom, var(--hubspot-color), var(--n8n-color));
+    }
+
+    .step-connector.hs-to-hs {
+      background: var(--hubspot-color);
+      opacity: 0.3;
+    }
+
+    .step-label-pill {
+      margin-top: 8px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 8px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+
+    .step-label-pill.hubspot {
+      background: var(--hubspot-bg);
+      color: var(--hubspot-color);
+    }
+
+    .step-label-pill.n8n {
+      background: var(--n8n-bg);
+      color: var(--n8n-color);
+    }
+
+    .step-body {
+      padding-bottom: 40px;
+    }
+
+    .step-card {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: box-shadow 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+
+    .step-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+    }
+
+    .step-card.n8n-card {
+      border-color: rgba(244,162,49,0.35);
+      background: linear-gradient(135deg, #fff8ed 0%, #fffcf5 100%);
+    }
+
+    .step-card.hubspot-card {
+      border-color: rgba(0,102,204,0.2);
+    }
+
+    .card-header {
+      padding: 18px 20px 16px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .n8n-card .card-header {
+      border-bottom-color: rgba(244,162,49,0.2);
+    }
+
+    .card-title-area { flex: 1; }
+
+    .card-wf-id {
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--text-light);
+      margin-bottom: 4px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+
+    .n8n-card .card-title { color: #8a5000; }
+
+    .card-status-badge {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .badge-active {
+      background: rgba(0,200,150,0.12);
+      color: #00915e;
+      border: 1px solid rgba(0,200,150,0.3);
+    }
+
+    .badge-n8n {
+      background: rgba(244,162,49,0.15);
+      color: #8a5000;
+      border: 1px solid rgba(244,162,49,0.3);
+    }
+
+    .card-body {
+      padding: 16px 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .card-section-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-light);
+      margin-bottom: 8px;
+    }
+
+    .trigger-box {
+      background: var(--bg-page);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+    }
+
+    .n8n-card .trigger-box {
+      background: rgba(244,162,49,0.08);
+    }
+
+    .trigger-text {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .trigger-text strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .n8n-card .trigger-text strong { color: #6b3d00; }
+
+    /* Actions list */
+    .actions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .action-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .action-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .icon-move { background: #e8f2ff; color: #0066cc; }
+    .icon-set { background: #edfff5; color: #009960; }
+    .icon-wait { background: #fdf0e0; color: #c07000; }
+    .icon-write { background: #fff3e0; color: var(--n8n-color); }
+    .icon-fetch { background: #f3e8ff; color: #8000cc; }
+
+    /* Properties row */
+    .card-props {
+      padding: 12px 20px;
+      background: var(--bg-page);
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .n8n-card .card-props {
+      background: rgba(244,162,49,0.05);
+      border-top-color: rgba(244,162,49,0.15);
+    }
+
+    .prop-label-text {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-light);
+      margin-right: 4px;
+    }
+
+    .prop-tag {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .prop-tag.hs { background: #eef5ff; color: #0066cc; }
+    .prop-tag.n8n { background: #fff4e0; color: #8a5000; }
+
+    /* Alert box */
+    .card-alert {
+      margin: 0 20px 16px;
+      background: #fff8e1;
+      border: 1px solid #ffe082;
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .alert-icon {
+      font-size: 14px;
+      flex-shrink: 0;
+      line-height: 1.4;
+    }
+
+    .alert-text {
+      font-size: 12px;
+      color: #6d4c00;
+      line-height: 1.5;
+    }
+
+    /* Arrow between steps */
+    .step-arrow {
+      display: flex;
+      align-items: center;
+      padding: 4px 0 4px 200px;
+      gap: 8px;
+      margin: -16px 0 0;
+    }
+
+    .arrow-line {
+      flex: none;
+      width: 2px;
+      height: 32px;
+      background: var(--border);
+      margin-left: 19px;
+    }
+
+    /* ── TROUBLESHOOTING ── */
+    .trouble-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .trouble-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .trouble-card.critical {
+      border-color: rgba(220,53,69,0.25);
+      background: #fff8f8;
+    }
+
+    .trouble-card.warning {
+      border-color: rgba(244,162,49,0.3);
+      background: #fffcf5;
+    }
+
+    .trouble-icon {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .trouble-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+    }
+
+    .trouble-text {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ── OVERVIEW TABLE ── */
+    .overview-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+      margin-top: 8px;
+    }
+
+    .overview-table th {
+      background: var(--brand-primary);
+      color: rgba(255,255,255,0.7);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 12px 16px;
+      text-align: left;
+    }
+
+    .overview-table td {
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .overview-table tr:last-child td { border-bottom: none; }
+    .overview-table tr:hover td { background: var(--bg-page); }
+
+    .table-wf-name {
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 13px;
+    }
+
+    .table-type-badge {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    .type-list { background: #eef5ff; color: #0066cc; }
+    .type-event { background: #edfff5; color: #009960; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--brand-primary);
+      color: rgba(255,255,255,0.4);
+      text-align: center;
+      padding: 24px 32px;
+      font-size: 12px;
+      margin-top: 64px;
+    }
+
+    footer span { color: var(--brand-accent); }
+
+    /* ── COLLAPSIBLE ── */
+    .collapse-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      font-size: 12px;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: color 0.2s;
+    }
+
+    .collapse-btn:hover { color: var(--text-primary); }
+    .collapse-content { overflow: hidden; transition: max-height 0.3s ease; }
+    .collapse-content.collapsed { max-height: 0 !important; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .step { grid-template-columns: 1fr; }
+      .step-sidebar { flex-direction: row; align-items: center; padding: 0 0 12px; }
+      .step-connector { display: none; }
+      .card-body { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 26px; }
+      .hero-stats { gap: 20px; }
+      .main { padding: 32px 16px; }
+      .step-arrow { padding-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="header-logo">
+      <div class="logo-mark">S</div>
+      <div>
+        <div class="header-title">Sunne</div>
+        <div class="header-subtitle">Documentação Interna · Automações</div>
+      </div>
+    </div>
+    <div class="header-badge">● 6 Workflows Ativos</div>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Pipeline de Contratos e Assinaturas</div>
+    <h1>Fluxo de <span>Automações</span><br/>do HubSpot</h1>
+    <p>Documentação completa dos 6 workflows que conduzem um ticket desde a confirmação de pagamento até a abertura do rateio no sistema OPS.</p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-number">6</div>
+        <div class="stat-label">Workflows</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">5</div>
+        <div class="stat-label">Handoffs para o n8n</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">8</div>
+        <div class="stat-label">Estágios de Ticket</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Automatizado</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend-bar">
+  <div class="legend-inner">
+    <span class="legend-title">Legenda</span>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#0066cc;"></div>
+      Ação do HubSpot (Workflow)
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#f4a231;"></div>
+      Ação do n8n (Integração Externa)
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#00c896; border-radius:50%;"></div>
+      Propriedade de sinal (gatilho entre sistemas)
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#ffe082; border-radius:2px;"></div>
+      Ponto de atenção
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- OVERVIEW TABLE -->
+  <div class="section-title">Resumo dos Workflows</div>
+  <table class="overview-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nome</th>
+        <th>Tipo de Gatilho</th>
+        <th>Propriedade de Entrada</th>
+        <th>Resultado</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>WF1</strong></td>
+        <td><div class="table-wf-name">Pagamento → Gerar Contratos</div><small style="color:var(--text-light);">ID 1697798163</small></td>
+        <td><span class="table-type-badge type-list">Baseado em Lista</span></td>
+        <td>Status do Ticket = Pagamento Confirmado / Agendado</td>
+        <td>Ticket → Gerar Contratos · Deal → Assinatura</td>
+      </tr>
+      <tr>
+        <td><strong>WF2</strong></td>
+        <td><div class="table-wf-name">Gerar Contratos → ClickSign</div><small style="color:var(--text-light);">ID 1754291845</small></td>
+        <td><span class="table-type-badge type-list">Baseado em Lista</span></td>
+        <td>Contratos do Ticket Gerados = verdadeiro</td>
+        <td>Ticket → Subir Contratos - ClickSign</td>
+      </tr>
+      <tr>
+        <td><strong>WF3</strong></td>
+        <td><div class="table-wf-name">ClickSign → Aguardando Assinatura</div><small style="color:var(--text-light);">ID 1756086378</small></td>
+        <td><span class="table-type-badge type-event">Baseado em Evento</span></td>
+        <td>Contratos do Ticket no ClickSign = verdadeiro</td>
+        <td>Ticket → Aguardando Assinatura</td>
+      </tr>
+      <tr>
+        <td><strong>WF4</strong></td>
+        <td><div class="table-wf-name">Assinatura → Baixando Documentos</div><small style="color:var(--text-light);">ID 1723227507</small></td>
+        <td><span class="table-type-badge type-event">Baseado em Evento</span></td>
+        <td>Contratos de Negócios Associados Assinados? = verdadeiro</td>
+        <td>Ticket → Assinados - Baixando Documentos</td>
+      </tr>
+      <tr>
+        <td><strong>WF5</strong></td>
+        <td><div class="table-wf-name">Documentos → Cadastro no OPS</div><small style="color:var(--text-light);">ID 1726537479</small></td>
+        <td><span class="table-type-badge type-event">Baseado em Evento</span></td>
+        <td>Link - Anexos do Drive preenchido</td>
+        <td>Ticket → Cadastro no OPS · Renomeia ticket</td>
+      </tr>
+      <tr>
+        <td><strong>WF6</strong></td>
+        <td><div class="table-wf-name">OPS → Aberto (Rateio)</div><small style="color:var(--text-light);">ID 1756086655</small></td>
+        <td><span class="table-type-badge type-event">Baseado em Evento</span></td>
+        <td>Negócios do Ticket Cadastrados no OPS? = verdadeiro</td>
+        <td>Ticket → Aberto (Rateio) · Deal → Estágio Final</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- PIPELINE FLOW -->
+  <div style="margin-top: 56px;">
+    <div class="section-title">Fluxo Detalhado Passo a Passo</div>
+
+    <div class="pipeline">
+
+      <!-- TRIGGER INICIAL -->
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px; padding:14px 20px; background:linear-gradient(135deg,#1a1a2e,#16213e); border-radius:12px; color:white;">
+        <div style="font-size:24px;">🎫</div>
+        <div>
+          <div style="font-size:11px; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:3px;">Ponto de Entrada</div>
+          <div style="font-size:15px; font-weight:600;">Ticket com Status = "Pagamento Confirmado" ou "Pagamento Agendado"</div>
+          <div style="font-size:12px; color:rgba(255,255,255,0.5); margin-top:2px;">O ciclo de automação é iniciado quando qualquer ticket do HubSpot entra em um desses dois status.</div>
+        </div>
+      </div>
+
+      <!-- STEP 1 -->
+      <div class="step">
+        <div class="step-sidebar">
+          <div class="step-number hubspot">1</div>
+          <div class="step-label-pill hubspot">HubSpot</div>
+          <div class="step-connector hs-to-n8n"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-card hubspot-card">
+            <div class="card-header">
+              <div class="card-title-area">
+                <div class="card-wf-id">Workflow ID · 1697798163</div>
+                <div class="card-title">Etapa 1 — Pagamento Confirmado ou Agendado para Gerar Contratos</div>
+              </div>
+              <div class="card-status-badge badge-active">● Ativo</div>
+            </div>
+            <div class="card-body">
+              <div>
+                <div class="card-section-label">Quando é ativado</div>
+                <div class="trigger-box">
+                  <div class="trigger-text">
+                    Quando o <strong>Status do Ticket</strong> muda para <strong>"Pagamento Confirmado"</strong> ou <strong>"Pagamento Agendado"</strong>. Reinscrição habilitada — se o ticket sair e voltar para esses status, o fluxo executa novamente.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="card-section-label">O que acontece</div>
+                <div class="actions-list">
+                  <div class="action-item">
+                    <div class="action-icon icon-move">→</div>
+                    <span>No <strong>negócio associado:</strong> Etapa do Negócio → "Assinatura"</span>
+                  </div>
+                  <div class="action-item">
+                    <div class="action-icon icon-set">👤</div>
+                    <span>No <strong>negócio associado:</strong> Proprietário → responsável fixo configurado</span>
+                  </div>
+                  <div class="action-item">
+                    <div class="action-icon icon-set">👤</div>
+                    <span>No <strong>ticket:</strong> Proprietário → mesmo responsável fixo</span>
+                  </div>
+                  <div class="action-item">
+                    <div class="action-icon icon-move">→</div>
+                    <span>No <strong>ticket:</strong> Status → "Gerar Contratos"</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-alert">
+              <div class="alert-icon">⚠️</div>
+              <div class="alert-text"><strong>Atenção:</strong> O responsável atribuído está fixo no workflow. Se esse usuário for desativado no HubSpot, as atribuições no ticket e no negócio falham silenciosamente. O vínculo entre ticket e negócio é obrigatório — sem ele, as ações no negócio são ignoradas sem erro visível.</div>
+            </div>
+            <div class="card-props">
+              <span class="prop-label-text">Propriedades envolvidas:</span>
+              <span class="prop-tag hs">Status do Ticket</span>
+              <span class="prop-tag hs">Etapa do Negócio</span>
+              <span class="prop-tag hs">Proprietário do Ticket</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- N8N HANDOFF 1 -->
+      <div class="step">
+        <div class="step-sidebar">
+          <div class="step-number n8n">n8n</div>
+          <div class="step-label-pill n8n">n8n</div>
+          <div class="step-connector n8n-to-hs"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-card n8n-card">
+            <div class="card-header">
+              <div class="card-title-area">
+                <div class="card-wf-id">Handoff 1 · Integração Externa</div>
+                <div class="card-title">n8n — Geração dos Contratos</div>
+              </div>
+              <div class="card-status-badge badge-n8n">🔶 n8n</div>
+            </div>
+            <div class="card-body">
+              <div>
+                <div class="card-section-label">O que dispara o n8n</div>
+                <div class="trigger-box">
+                  <div class="trigger-text">O n8n monitora o HubSpot via webhook. Quando detecta um ticket com <strong>Status = "Gerar Contratos"</strong>, inicia a execução.</div>
+                </div>
+              </div>
+              <div>
+                <div class="card-section-label">O que o n8n faz</div>
+                <div class="actions-list">
+                  <div class="action-item">
+                    <div class="action-icon icon-fetch">📄</div>
+                    <span>Busca os dados do ticket e do negócio associado via API do HubSpot</span>
+                  </div>
+                  <div class="action-item">
+                    <div class="action-icon icon-fetch">⚙️</div>
+                    <span>Gera os documentos de contrato com as informações coletadas</span>
+                  </div>
+                  <div class="action-icon icon-write">✍️</div>
+                  <div class="action-item">
+                    <span>Escreve de volta no HubSpot: <strong>Contratos do Ticket Gerados = verdadeiro</strong></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-props">
+              <span class="prop-label-text">Sinal de retorno:</span>
+              <span class="prop-tag n8n">Contratos do Ticket Gerados</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step">
+        <div class="step-sidebar">
+          <div class="step-number hubspot">2</div>
+          <div class="step-label-pill hubspot">HubSpot</div>
+          <div class="step-connector hs-to-n8n"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-card hubspot-card">
+            <div class="card-header">
+              <div class="card-title-area">
+                <div class="card-wf-id">Workflow ID · 1754291845</div>
+                <div class="card-title">Etapa 2 — Gerar Contratos para Subir Contratos - ClickSign</div>
+              </div>
+              <div class="card-status-badge badge-active">● Ativo</div>
+            </div>
+            <div class="card-body">
+              <div>
+                <div class="card-section-label">Quando é ativado</div>
+                <div class="trigger-box">
+                  <div class="trigger-text">
+                    Quando o ticket está em <strong>"Gerar Contratos"</strong> E o campo <strong>Contratos do Ticket Gerados</strong> é marcado como verdadeiro pelo n8n. Tem dois gatilhos de reinscrição independentes: mudança nessa propriedade ou mudança no Status do Ticket.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="card-section-label">O que acontece</div>
+                <div class="actions-list">
+                  <div class="action-item">
+                    <div class="action-icon icon-move">→</div>
+                    <span>No <strong>ticket:</strong> Status → "Subir Contratos - ClickSign"</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-alert">
+              <div class="alert-icon">⚠️</div>
+              <div class="alert-text"><strong>Risco de bypass:</strong> Se alguém mover manualmente um ticket de volta para "Gerar Contratos" e o campo <strong>Contratos do Ticket Gerados</strong> já estiver marcado, o workflow avança imediatamente sem que os contratos sejam gerados novamente.</div>
+            </div>
+            <div class="card-props">
+              <span class="prop-label-text">Propriedades envolvidas:</span>
+              <span class="prop-tag n8n">Contratos do Ticket Gerados</span>
+              <span class="prop-tag hs">Status do Ticket</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- N8N HANDOFF 2 -->
+      <div class="step">
+        <div class="step-sidebar">
+          <div class="step-number n8n">n8n</div>
+          <div class="step-label-pill n8n">n8n</div>
+          <div class="step-connector n8n-to-hs"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-card n8n-card">
+            <div class="card-header">
+              <div class="card-title-area">
+                <div class="card-wf-id">Handoff 2 · Integração Externa</div>
+                <div class="card-title">n8n — Upload para o ClickSign</div>
+              </div>
+              <div class="card-status-badge badge-n8n">🔶 n8n</div>
+            </div>
+            <div class="card-body">
+              <div>
+                <div class="card-section-label">O que dispara o n8n</div>
+                <div class="trigger-box">
+                  <div class="trigger-text">Ticket com <strong>Status = "Subir Contratos - ClickSign"</strong> detectado pelo monitoramento do n8n.</div>
+                </div>
+              </div>
+              <div>
+                <div class="card-section-label">O que o n8n faz</div>
+                <div class="actions-list">
+                  <div class="action-item">
+                    <div class="action-icon icon-fetch">📤</div>
+                    <span>Faz upload dos contratos gerados para o ClickSign</span>
+                  </div>
+                  <div class="action-item">
+                    <div class="action-icon icon-fetch">✉️</div>
+                    <span>Configura os signatários no documento ClickSign</span>
+                  </div>
+                  <div class="action-item">
+                    <div class="action-icon icon-write">✍️</div>
+                    <span>Escreve no HubSpot: <strong>Contratos do Ticket no ClickSign = verdadeiro</strong></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-props">
+              <span class="prop-label-text">Sinal de retorno:</span>
+              <span class="prop-tag n8n">Contratos do Ticket no ClickSign</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step">
+        <div class="step-sidebar">
+          <div class="step-number hubspot">3</div>
+          <div class="step-label-pill hubspot">HubSpot</div>
+          <div class="step-connector hs-to-n8n"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-card hubspot-card">
+            <div class="card-header">
+              <div class="card-title-area">
+                <div class="card-wf-id">Workflow ID · 1756086378</div>
+                <div class="card-title">Etapa 3 — Subir Contratos - ClickSign para Aguardando Assinatura</div>
+              </div>
+              <div class="card-status-badge badge-active">● Ativo</div>
+            </div>
+            <div class="card-body">
+              <div>
+                <div class="card-section-label">Quando é ativado</div>
+                <div class="trigger-box">
+                  <div class="trigger-text">
+                    Por evento: quando <strong>Contratos do Ticket no ClickSign</strong> muda para verdadeiro. Condição de segurança: o ticket deve estar em <strong>"Subir Contratos - ClickSign"</strong> — caso contrário, o workflow não executa mesmo que a propriedade mude.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="card-section-label">O que acontece</div>
+                <div class="actions-list">
+                  <div class="action-item">
+                    <div class="action-icon icon-move">→</div>
+                    <span>No <strong>ticket:</strong> Status → "Aguardando Assinatura"</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-props">
+              <span class="prop-label-text">Propriedades envolvidas:</span>
+              <span class="prop-tag n8n">Contratos do Ticket no ClickSign</span>
+              <span class="prop-tag hs">Status do Ticket</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- N8N HANDOFF 3 -->
+      <div class="step">
+        <div class="step-sidebar">
+          <div class="step-number n8n">n8n</div>
+          <div class="step-label-pill n8n">n8n</div>
+          <div class="step-connector n8n-to-hs"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-card n8n-card">
+            <div class="card-header">
+              <div class="card-title-area">
+                <div class="card-wf-id">Handoff 3 · Integração Externa</div>
+                <div class="card-title">n8n — Monitoramento de Assinaturas no ClickSign</div>
+              </div>
+              <div class="card-status-badge badge-n8n">🔶 n8n</div>
+            </div>
+            <div class="card-body">
+              <div>
+                <div class="card-section-label">O que dispara o n8n</div>
+                <div class="trigger-box">
+                  <div class="trigger-text">Ticket em <strong>"Aguardando Assinatura"</strong>. O n8n fica aguardando o webhook do ClickSign confirmar que os contratos foram assinados por todos os signatários de todos os negócios associados.</div>
+                </div>
+              </div>
+              <div>
+                <div class="card-section-label">O que o n8n faz</div>
+                <div class="actions-list">
+                  <div class="action-item">
+                    <div class="action-icon icon-fetch">👂</div>
+                    <span>Aguarda o webhook do ClickSign (evento de assinatura concluída)</span>
+                  </div>
+                  <div class="action-item">
+                    <div class="action-icon icon-fetch">✅</div>
+                    <span>Valida que <strong>todos</strong> os contratos dos negócios associados estão assinados</span>
+                  </div>
+                  <div class="action-item">
+                    <div class="action-icon icon-write">✍️</div>
+                    <span>Escreve no HubSpot: <strong>Contratos de Negócios Associados Assinados? = verdadeiro</strong></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-alert" style="margin:0 20px 16px;">
+              <div class="alert-icon">🚨</div>
+              <div class="alert-text"><strong>Risco crítico:</strong> O campo espera o valor <code>True</code> com T maiúsculo. Se o n8n escrever <code>true</code> em minúsculas, o HubSpot pode não reconhecer o match. Valide o formato antes de ir para produção.</div>
+            </div>
+            <div class="card-props">
+              <span class="prop-label-text">Sinal de retorno:</span>
+              <span class="prop-tag n8n">Contratos de Negócios Associados Assinados?</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step">
+        <div class="step-sidebar">
+          <div class="step-number hubspot">4</div>
+          <div class="step-label-pill hubspot">HubSpot</div>
+          <div class="step-connector hs-to-n8n"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-card hubspot-card">
+            <div class="card-header">
+              <div class="card-title-area">
+                <div class="card-wf-id">Workflow ID · 1723227507</div>
+                <div class="card-title">Etapa 4 — Aguardando Assinatura para Assinados - Baixando Documentos</div>
+              </div>
+              <div class="card-status-badge badge-active">● Ativo</div>
+            </div>
+            <div class="card-body">
+              <div>
+                <div class="card-section-label">Quando é ativado</div>
+                <div class="trigger-box">
+                  <div class="trigger-text">
+                    Por evento: quando <strong>Contratos de Negócios Associados Assinados?</strong> muda para verdadeiro. Condição de segurança: ticket deve estar em <strong>"Aguardando Assinatura"</strong>.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="card-section-label">O que acontece</div>
+                <div class="actions-list">
+                  <div class="action-item">
+                    <div class="action-icon icon-move">→</div>
+                    <span>No <strong>ticket:</strong> Status → "Assinados - Baixando Documentos"</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-props">
+              <span class="prop-label-text">Propriedades envolvidas:</span>
+              <span class="prop-tag n8n">Contratos de Negócios Associados Assinados?</span>
+              <span class="prop-tag hs">Status do Ticket</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- N8N HANDOFF 4 -->
+      <div class="step">
+        <div class="step-sidebar">
+          <div class="step-number n8n">n8n</div>
+          <div class="step-label-pill n8n">n8n</div>
+          <div class="step-connector n8n-to-hs"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-card n8n-card">
+            <div class="card-header">
+              <div class="card-title-area">
+                <div class="card-wf-id">Handoff 4 · Integração Externa</div>
+                <div class="card-title">n8n — Download dos Documentos e Upload para o Google Drive</div>
+              </div>
+              <div class="card-status-badge badge-n8n">🔶 n8n</div>
+            </div>
+            <div class="card-body">
+              <div>
+                <div class="card-section-label">O que dispara o n8n</div>
+                <div class="trigger-box">
+                  <div class="trigger-text">Ticket em <strong>"Assinados - Baixando Documentos"</strong>.</div>
+                </div>
+              </div>
+              <div>
+                <div class="card-section-label">O que o n8n faz</div>
+                <div class="actions-list">
+                  <div class="action-item">
+                    <div class="action-icon icon-fetch">⬇️</div>
+                    <span>Baixa os documentos assinados do ClickSign</span>
+                  </div>
+                  <div class="action-item">
+                    <div class="action-icon icon-fetch">☁️</div>
+                    <span>Faz upload para o Google Drive e obtém a URL da pasta</span>
+                  </div>
+                  <div class="action-item">
+                    <div class="action-icon icon-write">✍️</div>
+                    <span>Garante que <strong>Tipo de Rateio</strong>, <strong>Gerador - Alocação e Rateio</strong> e <strong>ID Usina - Alocação e Rateio</strong> estão preenchidos</span>
+                  </div>
+                  <div class="action-item">
+                    <div class="action-icon icon-write">✍️</div>
+                    <span>Escreve no HubSpot: <strong>Link - Anexos do Drive</strong> com a URL</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-props">
+              <span class="prop-label-text">Sinal de retorno:</span>
+              <span class="prop-tag n8n">Link - Anexos do Drive</span>
+              <span class="prop-tag n8n">Tipo de Rateio</span>
+              <span class="prop-tag n8n">Gerador - Alocação e Rateio</span>
+              <span class="prop-tag n8n">ID Usina - Alocação e Rateio</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step">
+        <div class="step-sidebar">
+          <div class="step-number hubspot">5</div>
+          <div class="step-label-pill hubspot">HubSpot</div>
+          <div class="step-connector hs-to-n8n"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-card hubspot-card">
+            <div class="card-header">
+              <div class="card-title-area">
+                <div class="card-wf-id">Workflow ID · 1726537479</div>
+                <div class="card-title">Etapa 5 — Assinados - Baixando Documentos para Cadastro no OPS</div>
+              </div>
+              <div class="card-status-badge badge-active">● Ativo</div>
+            </div>
+            <div class="card-body">
+              <div>
+                <div class="card-section-label">Quando é ativado</div>
+                <div class="trigger-box">
+                  <div class="trigger-text">
+                    Por evento: quando <strong>Link - Anexos do Drive</strong> recebe qualquer valor preenchido. Condição de segurança: ticket deve estar em <strong>"Assinados - Baixando Documentos"</strong>.
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="card-section-label">O que acontece (ordem real de execução)</div>
+                <div class="actions-list">
+                  <div class="action-item">
+                    <div class="action-icon icon-move">①</div>
+                    <span>Status do Ticket → "Cadastro no OPS"</span>
+                  </div>
+                  <div class="action-item">
+                    <div class="action-icon icon-set">②</div>
+                    <span><strong>Problemas nos Termos e Documentos?</strong> → falso (limpa pendências)</span>
+                  </div>
+                  <div class="action-item">
+                    <div class="action-icon icon-set">③</div>
+                    <span><strong>Nome do Ticket</strong> → [Tipo de Rateio] – [Gerador - Alocação e Rateio] – [ID Usina - Alocação e Rateio]</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-alert">
+              <div class="alert-icon">⚠️</div>
+              <div class="alert-text"><strong>Atenção:</strong> Se qualquer um dos três campos do template de nome estiver vazio, o Nome do Ticket ficará incompleto. O n8n deve garantir o preenchimento dos três antes de enviar o Link do Drive.</div>
+            </div>
+            <div class="card-props">
+              <span class="prop-label-text">Propriedades envolvidas:</span>
+              <span class="prop-tag n8n">Link - Anexos do Drive</span>
+              <span class="prop-tag hs">Status do Ticket</span>
+              <span class="prop-tag hs">Problemas nos Termos e Documentos?</span>
+              <span class="prop-tag hs">Nome do Ticket</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- N8N HANDOFF 5 -->
+      <div class="step">
+        <div class="step-sidebar">
+          <div class="step-number n8n">n8n</div>
+          <div class="step-label-pill n8n">n8n</div>
+          <div class="step-connector n8n-to-hs"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-card n8n-card">
+            <div class="card-header">
+              <div class="card-title-area">
+                <div class="card-wf-id">Handoff 5 · Integração Externa</div>
+                <div class="card-title">n8n — Cadastro no Sistema OPS</div>
+              </div>
+              <div class="card-status-badge badge-n8n">🔶 n8n</div>
+            </div>
+            <div class="card-body">
+              <div>
+                <div class="card-section-label">O que dispara o n8n</div>
+                <div class="trigger-box">
+                  <div class="trigger-text">Ticket em <strong>"Cadastro no OPS"</strong>.</div>
+                </div>
+              </div>
+              <div>
+                <div class="card-section-label">O que o n8n faz</div>
+                <div class="actions-list">
+                  <div class="action-item">
+                    <div class="action-icon icon-fetch">🏢</div>
+                    <span>Cadastra o cliente e o negócio no sistema OPS com os dados do HubSpot</span>
+                  </div>
+                  <div class="action-item">
+                    <div class="action-icon icon-write">✍️</div>
+                    <span>Escreve no HubSpot: <strong>Negócios do Ticket Cadastrados no OPS? = verdadeiro</strong></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-props">
+              <span class="prop-label-text">Sinal de retorno:</span>
+              <span class="prop-tag
+
